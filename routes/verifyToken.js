@@ -1,16 +1,7 @@
-const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const jwt = require('express-jwt');
 
-module.exports = function (req, res, next) {
-    const token = req.header('auth-token');
-    if (!token) return res.status(401).send('Access Denied');
-
-    try {
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        console.log('verified: ', verified);
-        req.user = verified;
-        next();
-    } catch (err) {
-        console.log('error: ', err);
-        res.status(400).send('Invalid Token');
-    }
-}
+module.exports.useJwt = jwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ['HS256'],
+    getToken: req => req.cookies.token })

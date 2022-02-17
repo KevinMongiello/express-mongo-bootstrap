@@ -1,12 +1,12 @@
 const router = require('express').Router();
-const verify = require('./verifyToken');
+const { useJwt } = require('./verifyToken');
 
-router.get('/', verify, (req, res) => {
+router.get('/', useJwt, (req, res) => {
     return res.json({
-        posts: {
+        posts: [{
             title: 'my first post',
             description: ' random data u shouldn\'t access without being logged in'
-        }
+        }]
     })
 });
 
