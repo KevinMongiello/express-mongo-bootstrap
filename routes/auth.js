@@ -39,9 +39,23 @@ router.post('/login',  async (req, res) => {
     if (!validPass) return res.status(400).send('Invalid password');
 
     // Create and assign token
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ _id: user._id, name: user.name, email: user.email }, process.env.JWT_SECRET);
 
     res.cookie('token', token, { httpOnly: true, sameSite: true }).send({ token });
 });
+
+router.get('/logout', (req, res) => {
+    res.cookie('token').status(200).send('success');
+})
+
+router.get('/jwt', (req, res) => {
+    const token = req.cookies.token;
+    
+    if (token && token !== 'undefined') {
+        res.send({ token: token });
+    } else {
+        res.send();
+    }
+})
 
 module.exports = router;
