@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon --trace-warnings index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +14,7 @@
     "body-parser": "^1.19.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "csurf": "^1.11.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
     "express-jwt": "^6.1.0",

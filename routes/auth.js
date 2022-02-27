@@ -25,20 +25,23 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login',  async (req, res) => {
+    // Validate Form
     const { error } = loginValidation(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-    // Fetch email
+
+    // Fetch User
     const user = await User.findOne({ email: req.body.email }).exec();
     if (!user) return res.status(400).send('Email or Password is incorrect');
 
+    // Validate Password
     const validPass = await bcrypt.compare(req.body.password, user.password);
     if (!validPass) return res.status(400).send('Invalid password');
 
     // Create and assign token
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-    
+
     res.cookie('token', token, { httpOnly: true, sameSite: true }).send({ token });
-})
+});
 
 module.exports = router;
